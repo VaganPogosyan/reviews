@@ -3,6 +3,7 @@ import Heading from "@/components/Heading";
 import { getReviews } from "@/lib/reviews";
 import Image from "next/image";
 import PaginationBar from "@/components/PaginationBar";
+import SearchBox from "@/components/SearchBox";
 
 // regenerate page periodically
 // export const revalidate = 10; // seconds
@@ -16,11 +17,15 @@ const PAGE_SIZE = 6;
 export default async function Reviews({ searchParams }) {
   const page = parsePageParam(searchParams.page);
   const { reviews, pageCount } = await getReviews(PAGE_SIZE, page);
-  // console.log(page);
+  // console.log(reviews.map(({ slug, title }) => ({ slug, title })));
+
   return (
     <>
       <Heading>Reviews</Heading>
-      <PaginationBar href="/reviews" page={page} pageCount={pageCount} />
+      <div className="flex justify-between items-center">
+        <PaginationBar href="/reviews" page={page} pageCount={pageCount} />
+        <SearchBox />
+      </div>
       <ul className="flex flex-row flex-wrap gap-3">
         {reviews.map((review, index) => (
           <li
